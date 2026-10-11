@@ -23,6 +23,7 @@
       --aging: #c2410c;
       --ledger: #b45309;
       --organization: #be123c;
+      --financial: #4d7c0f;
     }
 
     * {
@@ -414,6 +415,14 @@
       background: var(--organization);
     }
 
+    .financial {
+      color: var(--financial);
+    }
+
+    .financial .icon {
+      background: var(--financial);
+    }
+
     h2 {
       margin: 0;
       font-size: 22px;
@@ -512,7 +521,7 @@
           <p class="subtitle">برای ورود به هر سامانه، کارت مربوط به همان داشبورد را انتخاب کنید.</p>
         </div>
       </div>
-      <div class="status">۷ داشبورد فعال</div>
+      <div class="status">۸ داشبورد فعال</div>
     </header>
 
     <section class="market-panel" aria-labelledby="market-title">
@@ -699,6 +708,28 @@
         </span>
         <h2>ساختار هیئت‌مدیره و سهامداری</h2>
         <p class="desc">مشاهده ساختار سازمانی، ترکیب هیئت‌مدیره و روابط سهامداری شرکت‌ها.</p>
+        <span class="open">
+          ورود به سایت
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 6h3v3"></path>
+            <path d="M10 14 18 6"></path>
+            <path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path>
+          </svg>
+        </span>
+      </a>
+
+      <a class="card financial" href="https://positron-bi.github.io/Financial-Statements/" target="_blank" rel="noopener">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M5 3h11l3 3v15H5z"></path>
+            <path d="M16 3v4h4"></path>
+            <path d="M8 11h8"></path>
+            <path d="M8 15h8"></path>
+            <path d="M8 19h5"></path>
+          </svg>
+        </span>
+        <h2>صورت‌های مالی</h2>
+        <p class="desc">دسترسی به صورت‌های مالی و گزارش‌های عملکرد شرکت.</p>
         <span class="open">
           ورود به سایت
           <svg viewBox="0 0 24 24" aria-hidden="true">
