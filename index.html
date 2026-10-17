@@ -26,7 +26,6 @@
       --financial: #4d7c0f;
       --financial-group: #155e75;
       --ad-hoc-reports: #b91c1c;
-      --ad-hoc-upload: #7c2d12;
     }
 
     * {
@@ -110,6 +109,33 @@
       color: var(--muted);
       white-space: nowrap;
       font-size: 14px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .add-report {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      color: #fff;
+      background: #7c2d12;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .add-report:hover,
+    .add-report:focus-visible {
+      background: #9a3412;
+      outline: none;
     }
 
     .status::before {
@@ -442,14 +468,6 @@
       background: var(--ad-hoc-reports);
     }
 
-    .ad-hoc-upload {
-      color: var(--ad-hoc-upload);
-    }
-
-    .ad-hoc-upload .icon {
-      background: var(--ad-hoc-upload);
-    }
-
     h2 {
       margin: 0;
       font-size: 22px;
@@ -517,6 +535,10 @@
         flex-direction: column;
       }
 
+      .header-actions {
+        flex-wrap: wrap;
+      }
+
       .grid {
         grid-template-columns: 1fr;
       }
@@ -548,7 +570,10 @@
           <p class="subtitle">برای ورود به هر سامانه، کارت مربوط به همان داشبورد را انتخاب کنید.</p>
         </div>
       </div>
-      <div class="status">۸ داشبورد فعال</div>
+      <div class="header-actions">
+        <a class="add-report" href="ad-hoc-reports/upload.html">+ افزودن گزارش</a>
+        <div class="status">۸ داشبورد فعال</div>
+      </div>
     </header>
 
     <section class="market-panel" aria-labelledby="market-title">
@@ -805,25 +830,6 @@
         </span>
       </a>
 
-      <a class="card ad-hoc-upload" href="ad-hoc-reports/upload.html">
-        <span class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 16V3"></path>
-            <path d="m7 8 5-5 5 5"></path>
-            <path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path>
-          </svg>
-        </span>
-        <h2>افزودن گزارش</h2>
-        <p class="desc">بارگذاری و انتشار گزارش جدید در بخش گزارش‌های موردی.</p>
-        <span class="open">
-          بارگذاری گزارش
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M15 6h3v3"></path>
-            <path d="M10 14 18 6"></path>
-            <path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path>
-          </svg>
-        </span>
-      </a>
     </section>
 
     <footer>Positron BI Gateway</footer>
