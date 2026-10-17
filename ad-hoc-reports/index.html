@@ -234,7 +234,10 @@
         await loadReports();
       } catch (error) {
         console.error("Unable to upload report", error);
-        setUploadStatus(`آپلود ناموفق بود: ${error.message}`, true);
+        const message = error instanceof TypeError && error.message === "Failed to fetch"
+          ? "ارتباط مرورگر با GitHub برقرار نشد. اتصال اینترنت، افزونه‌های مسدودکننده و دسترسی api.github.com را بررسی کنید."
+          : `آپلود ناموفق بود: ${error.message}`;
+        setUploadStatus(message, true);
       } finally {
         uploadButton.disabled = false;
       }
