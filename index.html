@@ -24,6 +24,8 @@
       --ledger: #b45309;
       --organization: #be123c;
       --financial: #4d7c0f;
+      --financial-group: #155e75;
+      --ad-hoc-reports: #b91c1c;
     }
 
     * {
@@ -423,6 +425,22 @@
       background: var(--financial);
     }
 
+    .financial-group {
+      color: var(--financial-group);
+    }
+
+    .financial-group .icon {
+      background: var(--financial-group);
+    }
+
+    .ad-hoc-reports {
+      color: var(--ad-hoc-reports);
+    }
+
+    .ad-hoc-reports .icon {
+      background: var(--ad-hoc-reports);
+    }
+
     h2 {
       margin: 0;
       font-size: 22px;
@@ -732,6 +750,44 @@
         <p class="desc">دسترسی به صورت‌های مالی و گزارش‌های عملکرد شرکت.</p>
         <span class="open">
           ورود به سایت
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 6h3v3"></path>
+            <path d="M10 14 18 6"></path>
+            <path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path>
+          </svg>
+        </span>
+      </a>
+
+      <a class="card financial-group" href="financial-group/">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 6h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <path d="M3 9h18"></path>
+          </svg>
+        </span>
+        <h2>گروه مالی</h2>
+        <p class="desc">دسترسی به سامانه‌ها و گزارش‌های مالی گروه.</p>
+        <span class="open">
+          ورود به پوشه
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 6h3v3"></path>
+            <path d="M10 14 18 6"></path>
+            <path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path>
+          </svg>
+        </span>
+      </a>
+
+      <a class="card ad-hoc-reports" href="ad-hoc-reports/">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 6h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <path d="M3 9h18"></path>
+          </svg>
+        </span>
+        <h2>گزارش‌های موردی</h2>
+        <p class="desc">دسترسی به گزارش‌های تحلیلی و موردی.</p>
+        <span class="open">
+          ورود به پوشه
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M15 6h3v3"></path>
             <path d="M10 14 18 6"></path>

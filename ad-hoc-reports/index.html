@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>گزارش‌های موردی | Positron BI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light; --accent: #b91c1c; --text: #172033; --muted: #657086; --border: #d9e0ea; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; color: var(--text); font-family: "Vazirmatn", Tahoma, Arial, sans-serif; background: #f6f8fb; }
+    main { width: min(560px, 100%); padding: 36px; text-align: center; background: #fff; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 18px 45px rgba(20, 34, 59, .12); }
+    .icon { display: grid; place-items: center; width: 62px; height: 62px; margin: 0 auto 20px; color: #fff; background: var(--accent); border-radius: 8px; }
+    .icon svg { width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    h1 { margin: 0; font-size: 28px; }
+    p { margin: 12px 0 26px; color: var(--muted); line-height: 1.9; }
+    a { display: inline-block; color: var(--accent); font-weight: 700; text-decoration: none; }
+    form { display: grid; gap: 12px; text-align: right; }
+    label { color: var(--muted); font-size: 14px; }
+    input { width: 100%; margin-top: 6px; padding: 11px 12px; border: 1px solid var(--border); border-radius: 7px; font: inherit; }
+    button { padding: 11px 14px; border: 0; border-radius: 7px; color: #fff; background: var(--accent); font: inherit; font-weight: 700; cursor: pointer; }
+    .error { margin: 0; color: #b91c1c; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <main id="login-panel">
+    <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
+    <h1>ورود به پوشهٔ گزارش‌های موردی</h1>
+    <p>برای مشاهدهٔ محتوای این پوشه، اطلاعات ورود را وارد کنید.</p>
+    <form id="login-form">
+      <label>نام کاربری<input id="username" autocomplete="username" required></label>
+      <label>رمز عبور<input id="password" type="password" autocomplete="current-password" required></label>
+      <p class="error" id="error-message" hidden>اطلاعات ورود درست نیست.</p>
+      <button type="submit">ورود</button>
+    </form>
+  </main>
+
+  <main id="folder-content" hidden>
+    <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M3 9h18"></path></svg></span>
+    <h1>گزارش‌های موردی</h1>
+    <p>این پوشه برای گزارش‌های تحلیلی و موردی آماده است.</p>
+    <a href="../">بازگشت به صفحهٔ اصلی</a>
+  </main>
+
+  <script>
+    const accessKey = "positron-folder-access";
+    const validUsername = atob("YWRtaW4=");
+    const validPassword = atob("Nzc3Nw==");
+    const loginPanel = document.getElementById("login-panel");
+    const folderContent = document.getElementById("folder-content");
+
+    function grantAccess() {
+      sessionStorage.setItem(accessKey, "granted");
+      loginPanel.hidden = true;
+      folderContent.hidden = false;
+    }
+
+    if (sessionStorage.getItem(accessKey) === "granted") {
+      grantAccess();
+    }
+
+    document.getElementById("login-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      if (username === validUsername && password === validPassword) {
+        grantAccess();
+        return;
+      }
+      document.getElementById("error-message").hidden = false;
+    });
+  </script>
+</body>
+</html>
