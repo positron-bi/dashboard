@@ -17,6 +17,12 @@
     h1 { margin: 0; font-size: 28px; }
     p { margin: 12px 0 26px; color: var(--muted); line-height: 1.9; }
     a { display: inline-block; color: var(--accent); font-weight: 700; text-decoration: none; }
+    .folder-links { display: grid; gap: 12px; margin: 24px 0; text-align: right; }
+    .folder-link { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--border); border-radius: 8px; transition: border-color 160ms ease, box-shadow 160ms ease; }
+    .folder-link:hover, .folder-link:focus-visible { border-color: var(--accent); box-shadow: 0 8px 20px rgba(20, 34, 59, .09); outline: none; }
+    .folder-link svg { flex: 0 0 auto; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .folder-link strong, .folder-link small { display: block; }
+    .folder-link small { margin-top: 3px; color: var(--muted); font-weight: 400; }
     form { display: grid; gap: 12px; text-align: right; }
     label { color: var(--muted); font-size: 14px; }
     input { width: 100%; margin-top: 6px; padding: 11px 12px; border: 1px solid var(--border); border-radius: 7px; font: inherit; }
@@ -40,7 +46,13 @@
   <main id="folder-content" hidden>
     <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M3 9h18"></path></svg></span>
     <h1>گروه مالی</h1>
-    <p>این پوشه برای سامانه‌ها و گزارش‌های مالی گروه آماده است.</p>
+    <p>سامانه‌ها و گزارش‌های مالی گروه را از این بخش انتخاب کنید.</p>
+    <div class="folder-links">
+      <a class="folder-link" href="https://positron-bi.github.io/vesta-dashboard/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="m7 15 4-4 3 2 5-6"></path><path d="M16 7h3v3"></path></svg>
+        <span><strong>داشبورد وستا</strong><small>مشاهده گزارش‌ها و اطلاعات وستا</small></span>
+      </a>
+    </div>
     <a href="../">بازگشت به صفحهٔ اصلی</a>
   </main>
 
