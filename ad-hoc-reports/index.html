@@ -143,7 +143,11 @@
     function createReportLink(report) {
       const link = document.createElement("a");
       link.className = "report-link";
-      link.href = report.download_url;
+      const isHtmlReport = /\.html?$/i.test(report.name);
+      const encodedPath = report.path.split("/").map(encodeURIComponent).join("/");
+      link.href = isHtmlReport
+        ? `https://positron-bi.github.io/dashboard/${encodedPath}`
+        : report.download_url;
       link.target = "_blank";
       link.rel = "noopener";
       link.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"></path><path d="M16 3v4h4"></path><path d="M8 11h8"></path><path d="M8 15h8"></path><path d="M8 19h5"></path></svg>';
@@ -169,7 +173,9 @@
         }
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const reports = await response.json();
-        const files = Array.isArray(reports) ? reports.filter((item) => item.type === "file") : [];
+        const files = Array.isArray(reports)
+          ? reports.filter((item) => item.type === "file" && item.name !== ".gitkeep")
+          : [];
         if (!files.length) {
           reportsList.textContent = "هنوز گزارشی بارگذاری نشده است.";
           return;
