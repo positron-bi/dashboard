@@ -8,253 +8,36 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { color-scheme: light; --accent: #b91c1c; --text: #172033; --muted: #657086; --border: #d9e0ea; }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; color: var(--text); font-family: "Vazirmatn", Tahoma, Arial, sans-serif; background: #f6f8fb; }
-    main { width: min(560px, 100%); padding: 36px; text-align: center; background: #fff; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 18px 45px rgba(20, 34, 59, .12); }
-    #folder-content { width: min(760px, 100%); }
-    .icon { display: grid; place-items: center; width: 62px; height: 62px; margin: 0 auto 20px; color: #fff; background: var(--accent); border-radius: 8px; }
-    .icon svg { width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    h1 { margin: 0; font-size: 28px; }
-    p { margin: 12px 0 26px; color: var(--muted); line-height: 1.9; }
-    a { display: inline-block; color: var(--accent); font-weight: 700; text-decoration: none; }
-    form { display: grid; gap: 12px; text-align: right; }
-    label { color: var(--muted); font-size: 14px; }
-    input { width: 100%; margin-top: 6px; padding: 11px 12px; border: 1px solid var(--border); border-radius: 7px; font: inherit; }
-    button { padding: 11px 14px; border: 0; border-radius: 7px; color: #fff; background: var(--accent); font: inherit; font-weight: 700; cursor: pointer; }
-    button:disabled { cursor: wait; opacity: .7; }
-    .remember-token { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-    .remember-token input { width: auto; margin: 0; }
-    .forget-token { color: var(--accent); background: transparent; border: 1px solid var(--border); }
-    .error { margin: 0; color: #b91c1c; font-size: 13px; }
-    .reports-section, .upload-section { margin: 28px 0; padding-top: 24px; border-top: 1px solid var(--border); text-align: right; }
-    h2 { margin: 0 0 12px; font-size: 18px; }
-    .reports-list { display: grid; gap: 10px; }
-    .report-link { display: flex; align-items: center; gap: 12px; padding: 13px; border: 1px solid var(--border); border-radius: 8px; transition: border-color 160ms ease, box-shadow 160ms ease; }
-    .report-link:hover, .report-link:focus-visible { border-color: var(--accent); box-shadow: 0 8px 20px rgba(20, 34, 59, .09); outline: none; }
-    .report-link svg { flex: 0 0 auto; width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .report-link strong, .report-link small { display: block; overflow-wrap: anywhere; }
-    .report-link small, .upload-note, .upload-status { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
-    .upload-status.is-error { color: #b91c1c; }
+    :root { --accent:#b91c1c; --text:#172033; --muted:#657086; --border:#d9e0ea; } * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; padding:24px; color:var(--text); font-family:"Vazirmatn",Tahoma,Arial,sans-serif; background:#f6f8fb; }
+    main { width:min(1120px,100%); margin:0 auto; } #login-panel { width:min(560px,100%); margin:10vh auto; padding:36px; text-align:center; background:#fff; border:1px solid var(--border); border-radius:12px; box-shadow:0 18px 45px rgba(20,34,59,.12); }
+    .icon { display:grid; place-items:center; width:62px; height:62px; margin:0 auto 20px; color:#fff; background:var(--accent); border-radius:8px; }.icon svg,.report-icon svg { width:32px; height:32px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    h1 { margin:0; font-size:clamp(26px,4vw,36px); } p { color:var(--muted); line-height:1.9; } form { display:grid; gap:12px; margin-top:24px; text-align:right; } label { color:var(--muted); font-size:14px; } input { width:100%; margin-top:6px; padding:11px 12px; border:1px solid var(--border); border-radius:7px; font:inherit; } button { padding:11px 14px; border:0; border-radius:7px; color:#fff; background:var(--accent); font:inherit; font-weight:700; cursor:pointer; } .error { margin:0; color:#b91c1c; font-size:13px; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:8px 0 20px; border-bottom:1px solid var(--border); } header p { margin:6px 0 0; } .back { color:var(--accent); font-weight:700; text-decoration:none; white-space:nowrap; }
+    .reports-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; padding:28px 0; }.report-card { display:flex; flex-direction:column; min-height:230px; padding:22px; background:#fff; border:1px solid var(--border); border-radius:8px; box-shadow:0 10px 26px rgba(20,34,59,.08); transition:transform 160ms ease,box-shadow 160ms ease,border-color 160ms ease; }.report-card:hover { transform:translateY(-4px); border-color:var(--accent); box-shadow:0 18px 45px rgba(20,34,59,.12); }.report-icon { display:grid; place-items:center; width:54px; height:54px; margin-bottom:18px; color:#fff; background:var(--accent); border-radius:8px; }.report-card h2 { margin:0; font-size:19px; line-height:1.7; overflow-wrap:anywhere; }.report-card p { margin:9px 0 16px; font-size:13px; }.open { margin-top:auto; color:var(--accent); font-size:14px; font-weight:700; text-decoration:none; }.delete { margin-top:12px; padding:7px 0; color:#b91c1c; background:transparent; border:1px solid #fecaca; border-radius:6px; font:inherit; font-size:13px; font-weight:700; cursor:pointer; }.delete:hover { background:#fef2f2; }.reports-status { margin:0; color:var(--muted); font-size:13px; }.reports-status.error { color:#b91c1c; }.empty,.loading { grid-column:1 / -1; padding:38px; text-align:center; color:var(--muted); background:#fff; border:1px solid var(--border); border-radius:8px; }
+    @media(max-width:1040px){.reports-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:640px){body{padding:16px}header{align-items:flex-start;flex-direction:column}.reports-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <main id="login-panel">
     <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
-    <h1>ورود به پوشهٔ گزارش‌های موردی</h1>
-    <p>برای مشاهدهٔ محتوای این پوشه، اطلاعات ورود را وارد کنید.</p>
-    <form id="login-form">
-      <label>نام کاربری<input id="username" autocomplete="username" required></label>
-      <label>رمز عبور<input id="password" type="password" autocomplete="current-password" required></label>
-      <p class="error" id="error-message" hidden>اطلاعات ورود درست نیست.</p>
-      <button type="submit">ورود</button>
-    </form>
+    <h1>ورود به گزارش‌های موردی</h1><p>برای مشاهدهٔ گزارش‌های منتشرشده، اطلاعات ورود را وارد کنید.</p>
+    <form id="login-form"><label>نام کاربری<input id="username" autocomplete="username" required></label><label>رمز عبور<input id="password" type="password" autocomplete="current-password" required></label><p class="error" id="error-message" hidden>اطلاعات ورود درست نیست.</p><button type="submit">ورود</button></form>
   </main>
-
   <main id="folder-content" hidden>
-    <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M3 9h18"></path></svg></span>
-    <h1>گزارش‌های موردی</h1>
-    <p>گزارش‌های عمومی این بخش را مشاهده یا گزارش جدیدی بارگذاری کنید.</p>
-
-    <section class="reports-section" aria-labelledby="reports-title">
-      <h2 id="reports-title">گزارش‌های موجود</h2>
-      <div class="reports-list" id="reports-list" aria-live="polite">در حال دریافت فهرست گزارش‌ها…</div>
-    </section>
-
-    <section class="upload-section" aria-labelledby="upload-title">
-      <h2 id="upload-title">بارگذاری گزارش جدید</h2>
-      <p class="upload-note">برای آپلود، یک GitHub Fine-grained Token با دسترسی «Contents: Read and write» به مخزن وارد کنید. توکن ذخیره نمی‌شود؛ حداکثر حجم هر فایل ۲۵ مگابایت است.</p>
-      <form id="upload-form">
-        <label>GitHub Token<input id="github-token" type="password" autocomplete="off" spellcheck="false" required></label>
-        <label class="remember-token"><input id="remember-token" type="checkbox">ذخیرهٔ توکن روی همین دستگاه</label>
-        <label>فایل گزارش<input id="report-file" type="file" required></label>
-        <p class="upload-status" id="upload-status" aria-live="polite"></p>
-        <button id="upload-button" type="submit">آپلود و انتشار</button>
-        <button class="forget-token" id="forget-token" type="button">حذف توکن ذخیره‌شده</button>
-      </form>
-    </section>
-
-    <a href="../">بازگشت به صفحهٔ اصلی</a>
+    <header><div><h1>گزارش‌های موردی</h1><p>گزارش‌های منتشرشده را انتخاب کنید.</p><p class="reports-status" id="reports-status" aria-live="polite"></p></div><a class="back" href="../">بازگشت به صفحهٔ اصلی</a></header>
+    <section class="reports-grid" id="reports-list" aria-live="polite"><div class="loading">در حال دریافت گزارش‌ها…</div></section>
   </main>
-
   <script>
-    const accessKey = "positron-folder-access";
-    const validUsername = atob("YWRtaW4=");
-    const validPassword = atob("Nzc3Nw==");
-    const repository = "positron-bi/dashboard";
-    const uploadsPath = "ad-hoc-reports/uploads";
-    const maxFileSize = 25 * 1024 * 1024;
-    const tokenStorageKey = "positron-github-upload-token";
-    const loginPanel = document.getElementById("login-panel");
-    const folderContent = document.getElementById("folder-content");
-    const reportsList = document.getElementById("reports-list");
-    const uploadStatus = document.getElementById("upload-status");
-    const uploadButton = document.getElementById("upload-button");
-    const tokenInput = document.getElementById("github-token");
-    const rememberTokenInput = document.getElementById("remember-token");
-
-    const savedToken = localStorage.getItem(tokenStorageKey);
-    if (savedToken) {
-      tokenInput.value = savedToken;
-      rememberTokenInput.checked = true;
-    }
-
-    rememberTokenInput.addEventListener("change", () => {
-      if (!rememberTokenInput.checked) localStorage.removeItem(tokenStorageKey);
-    });
-
-    function grantAccess() {
-      sessionStorage.setItem(accessKey, "granted");
-      loginPanel.hidden = true;
-      folderContent.hidden = false;
-      loadReports();
-    }
-
-    if (sessionStorage.getItem(accessKey) === "granted") {
-      grantAccess();
-    }
-
-    document.getElementById("login-form").addEventListener("submit", (event) => {
-      event.preventDefault();
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      if (username === validUsername && password === validPassword) {
-        grantAccess();
-        return;
-      }
-      document.getElementById("error-message").hidden = false;
-    });
-
-    function githubUrl(path) {
-      const encodedPath = path.split("/").map(encodeURIComponent).join("/");
-      return `https://api.github.com/repos/${repository}/contents/${encodedPath}`;
-    }
-
-    function formatFileSize(size) {
-      if (size < 1024 * 1024) return `${Math.ceil(size / 1024)} کیلوبایت`;
-      return `${new Intl.NumberFormat("fa-IR", { maximumFractionDigits: 1 }).format(size / (1024 * 1024))} مگابایت`;
-    }
-
-    function setUploadStatus(message, isError = false) {
-      uploadStatus.textContent = message;
-      uploadStatus.classList.toggle("is-error", isError);
-    }
-
-    function createReportLink(report) {
-      const link = document.createElement("a");
-      link.className = "report-link";
-      const isHtmlReport = /\.html?$/i.test(report.name);
-      const encodedPath = report.path.split("/").map(encodeURIComponent).join("/");
-      link.href = isHtmlReport
-        ? `https://positron-bi.github.io/dashboard/${encodedPath}`
-        : report.download_url;
-      link.target = "_blank";
-      link.rel = "noopener";
-      link.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"></path><path d="M16 3v4h4"></path><path d="M8 11h8"></path><path d="M8 15h8"></path><path d="M8 19h5"></path></svg>';
-      const details = document.createElement("span");
-      const name = document.createElement("strong");
-      const size = document.createElement("small");
-      name.textContent = report.name;
-      size.textContent = formatFileSize(report.size);
-      details.append(name, size);
-      link.append(details);
-      return link;
-    }
-
-    async function loadReports() {
-      reportsList.textContent = "در حال دریافت فهرست گزارش‌ها…";
-      try {
-        const response = await fetch(githubUrl(uploadsPath), {
-          headers: { Accept: "application/vnd.github+json" }
-        });
-        if (response.status === 404) {
-          reportsList.textContent = "هنوز گزارشی بارگذاری نشده است.";
-          return;
-        }
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const reports = await response.json();
-        const files = Array.isArray(reports)
-          ? reports.filter((item) => item.type === "file" && item.name !== ".gitkeep")
-          : [];
-        if (!files.length) {
-          reportsList.textContent = "هنوز گزارشی بارگذاری نشده است.";
-          return;
-        }
-        reportsList.replaceChildren(...files.sort((a, b) => b.name.localeCompare(a.name)).map(createReportLink));
-      } catch (error) {
-        console.error("Unable to load reports", error);
-        reportsList.textContent = "دریافت فهرست گزارش‌ها ناموفق بود. صفحه را دوباره بارگذاری کنید.";
-      }
-    }
-
-    function readFileAsBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(",", 2)[1]);
-        reader.onerror = () => reject(reader.error);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    document.getElementById("upload-form").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const token = tokenInput.value.trim();
-      const file = document.getElementById("report-file").files[0];
-      if (!token || !file) return;
-      if (file.size > maxFileSize) {
-        setUploadStatus("حجم فایل باید حداکثر ۲۵ مگابایت باشد.", true);
-        return;
-      }
-
-      const safeFileName = file.name.replace(/[\\/:*?"<>|]/g, "-");
-      const uploadPath = `${uploadsPath}/${Date.now()}-${safeFileName || "report"}`;
-      uploadButton.disabled = true;
-      setUploadStatus("در حال آپلود و انتشار گزارش…");
-      try {
-        const content = await readFileAsBase64(file);
-        const response = await fetch(githubUrl(uploadPath), {
-          method: "PUT",
-          headers: {
-            Accept: "application/vnd.github+json",
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            "X-GitHub-Api-Version": "2022-11-28"
-          },
-          body: JSON.stringify({
-            message: `Add ad hoc report: ${safeFileName || "report"}`,
-            content
-          })
-        });
-        if (!response.ok) {
-          const error = await response.json().catch(() => ({}));
-          throw new Error(error.message || `HTTP ${response.status}`);
-        }
-        document.getElementById("report-file").value = "";
-        if (rememberTokenInput.checked) {
-          localStorage.setItem(tokenStorageKey, token);
-        } else {
-          localStorage.removeItem(tokenStorageKey);
-          tokenInput.value = "";
-        }
-        setUploadStatus("گزارش با موفقیت منتشر شد.");
-        await loadReports();
-      } catch (error) {
-        console.error("Unable to upload report", error);
-        const message = error instanceof TypeError && error.message === "Failed to fetch"
-          ? "ارتباط مرورگر با GitHub برقرار نشد. اتصال اینترنت، افزونه‌های مسدودکننده و دسترسی api.github.com را بررسی کنید."
-          : `آپلود ناموفق بود: ${error.message}`;
-        setUploadStatus(message, true);
-      } finally {
-        uploadButton.disabled = false;
-      }
-    });
-
-    document.getElementById("forget-token").addEventListener("click", () => {
-      localStorage.removeItem(tokenStorageKey);
-      tokenInput.value = "";
-      rememberTokenInput.checked = false;
-      setUploadStatus("توکن ذخیره‌شده از این مرورگر حذف شد.");
-    });
+    const accessKey="positron-folder-access",validUsername=atob("YWRtaW4="),validPassword=atob("Nzc3Nw=="),repository="positron-bi/dashboard",uploadsPath="ad-hoc-reports/uploads";
+    const loginPanel=document.getElementById("login-panel"),folderContent=document.getElementById("folder-content"),reportsList=document.getElementById("reports-list"),reportsStatus=document.getElementById("reports-status");
+    const githubUrl=(path)=>`https://api.github.com/repos/${repository}/contents/${path.split("/").map(encodeURIComponent).join("/")}`;
+    const formatFileSize=(size)=>size<1024*1024?`${Math.ceil(size/1024)} کیلوبایت`:`${new Intl.NumberFormat("fa-IR",{maximumFractionDigits:1}).format(size/(1024*1024))} مگابایت`;
+    const reportTitle=(name)=>name.replace(/^\d+-/,"").replace(/\.html?$/i,"").replace(/[-_]/g," ");
+    function createReportCard(report){const card=document.createElement("article"),isHtml=/\.html?$/i.test(report.name),path=report.path.split("/").map(encodeURIComponent).join("/");card.className="report-card";card.innerHTML='<span class="report-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"></path><path d="M16 3v4h4"></path><path d="M8 11h8"></path><path d="M8 15h8"></path><path d="M8 19h5"></path></svg></span>';const title=document.createElement("h2"),detail=document.createElement("p"),open=document.createElement("a"),remove=document.createElement("button");title.textContent=reportTitle(report.name);detail.textContent=formatFileSize(report.size);open.className="open";open.href=isHtml?`https://positron-bi.github.io/dashboard/${path}`:report.download_url;open.target="_blank";open.rel="noopener";open.textContent="مشاهده گزارش";remove.className="delete";remove.type="button";remove.textContent="حذف گزارش";remove.addEventListener("click",()=>deleteReport(report));card.append(title,detail,open,remove);return card;}
+    async function deleteReport(report){if(!confirm(`گزارش «${reportTitle(report.name)}» حذف شود؟`))return;const token=prompt("برای حذف، توکن GitHub را وارد کنید. این مقدار ذخیره نمی‌شود:");if(!token)return;reportsStatus.classList.remove("error");reportsStatus.textContent="در حال حذف گزارش…";try{const response=await fetch(githubUrl(report.path),{method:"DELETE",headers:{Accept:"application/vnd.github+json",Authorization:`Bearer ${token}`,"Content-Type":"application/json","X-GitHub-Api-Version":"2022-11-28"},body:JSON.stringify({message:`Delete ad hoc report: ${report.name}`,sha:report.sha})});if(!response.ok){const error=await response.json().catch(()=>({}));throw new Error(error.message||`HTTP ${response.status}`)}reportsStatus.textContent="گزارش حذف شد.";await loadReports()}catch(error){console.error("Unable to delete report",error);reportsStatus.textContent=`حذف ناموفق بود: ${error.message}`;reportsStatus.classList.add("error")}}
+    async function loadReports(){try{const response=await fetch(githubUrl(uploadsPath),{headers:{Accept:"application/vnd.github+json"}});if(response.status===404){reportsList.innerHTML='<div class="empty">هنوز گزارشی منتشر نشده است.</div>';return}if(!response.ok)throw new Error(`HTTP ${response.status}`);const reports=await response.json(),files=Array.isArray(reports)?reports.filter((item)=>item.type==="file"&&item.name!==".gitkeep"):[];if(!files.length){reportsList.innerHTML='<div class="empty">هنوز گزارشی منتشر نشده است.</div>';return}reportsList.replaceChildren(...files.sort((a,b)=>b.name.localeCompare(a.name)).map(createReportCard))}catch(error){console.error("Unable to load reports",error);reportsList.innerHTML='<div class="empty">دریافت فهرست گزارش‌ها ناموفق بود. صفحه را دوباره بارگذاری کنید.</div>'}}
+    function grantAccess(){sessionStorage.setItem(accessKey,"granted");loginPanel.hidden=true;folderContent.hidden=false;loadReports()}if(sessionStorage.getItem(accessKey)==="granted")grantAccess();document.getElementById("login-form").addEventListener("submit",(event)=>{event.preventDefault();if(document.getElementById("username").value===validUsername&&document.getElementById("password").value===validPassword)grantAccess();else document.getElementById("error-message").hidden=false});
   </script>
 </body>
 </html>

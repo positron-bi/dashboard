@@ -26,6 +26,7 @@
       --financial: #4d7c0f;
       --financial-group: #155e75;
       --ad-hoc-reports: #b91c1c;
+      --ad-hoc-upload: #7c2d12;
     }
 
     * {
@@ -441,6 +442,14 @@
       background: var(--ad-hoc-reports);
     }
 
+    .ad-hoc-upload {
+      color: var(--ad-hoc-upload);
+    }
+
+    .ad-hoc-upload .icon {
+      background: var(--ad-hoc-upload);
+    }
+
     h2 {
       margin: 0;
       font-size: 22px;
@@ -788,6 +797,26 @@
         <p class="desc">دسترسی به گزارش‌های تحلیلی و موردی.</p>
         <span class="open">
           ورود به پوشه
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 6h3v3"></path>
+            <path d="M10 14 18 6"></path>
+            <path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path>
+          </svg>
+        </span>
+      </a>
+
+      <a class="card ad-hoc-upload" href="ad-hoc-reports/upload.html">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 16V3"></path>
+            <path d="m7 8 5-5 5 5"></path>
+            <path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path>
+          </svg>
+        </span>
+        <h2>افزودن گزارش</h2>
+        <p class="desc">بارگذاری و انتشار گزارش جدید در بخش گزارش‌های موردی.</p>
+        <span class="open">
+          بارگذاری گزارش
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M15 6h3v3"></path>
             <path d="M10 14 18 6"></path>
