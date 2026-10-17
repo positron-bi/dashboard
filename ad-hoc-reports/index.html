@@ -23,6 +23,9 @@
     input { width: 100%; margin-top: 6px; padding: 11px 12px; border: 1px solid var(--border); border-radius: 7px; font: inherit; }
     button { padding: 11px 14px; border: 0; border-radius: 7px; color: #fff; background: var(--accent); font: inherit; font-weight: 700; cursor: pointer; }
     button:disabled { cursor: wait; opacity: .7; }
+    .remember-token { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .remember-token input { width: auto; margin: 0; }
+    .forget-token { color: var(--accent); background: transparent; border: 1px solid var(--border); }
     .error { margin: 0; color: #b91c1c; font-size: 13px; }
     .reports-section, .upload-section { margin: 28px 0; padding-top: 24px; border-top: 1px solid var(--border); text-align: right; }
     h2 { margin: 0 0 12px; font-size: 18px; }
@@ -63,9 +66,11 @@
       <p class="upload-note">برای آپلود، یک GitHub Fine-grained Token با دسترسی «Contents: Read and write» به مخزن وارد کنید. توکن ذخیره نمی‌شود؛ حداکثر حجم هر فایل ۲۵ مگابایت است.</p>
       <form id="upload-form">
         <label>GitHub Token<input id="github-token" type="password" autocomplete="off" spellcheck="false" required></label>
+        <label class="remember-token"><input id="remember-token" type="checkbox">ذخیرهٔ توکن روی همین دستگاه</label>
         <label>فایل گزارش<input id="report-file" type="file" required></label>
         <p class="upload-status" id="upload-status" aria-live="polite"></p>
         <button id="upload-button" type="submit">آپلود و انتشار</button>
+        <button class="forget-token" id="forget-token" type="button">حذف توکن ذخیره‌شده</button>
       </form>
     </section>
 
@@ -79,11 +84,24 @@
     const repository = "positron-bi/dashboard";
     const uploadsPath = "ad-hoc-reports/uploads";
     const maxFileSize = 25 * 1024 * 1024;
+    const tokenStorageKey = "positron-github-upload-token";
     const loginPanel = document.getElementById("login-panel");
     const folderContent = document.getElementById("folder-content");
     const reportsList = document.getElementById("reports-list");
     const uploadStatus = document.getElementById("upload-status");
     const uploadButton = document.getElementById("upload-button");
+    const tokenInput = document.getElementById("github-token");
+    const rememberTokenInput = document.getElementById("remember-token");
+
+    const savedToken = localStorage.getItem(tokenStorageKey);
+    if (savedToken) {
+      tokenInput.value = savedToken;
+      rememberTokenInput.checked = true;
+    }
+
+    rememberTokenInput.addEventListener("change", () => {
+      if (!rememberTokenInput.checked) localStorage.removeItem(tokenStorageKey);
+    });
 
     function grantAccess() {
       sessionStorage.setItem(accessKey, "granted");
@@ -174,7 +192,7 @@
 
     document.getElementById("upload-form").addEventListener("submit", async (event) => {
       event.preventDefault();
-      const token = document.getElementById("github-token").value.trim();
+      const token = tokenInput.value.trim();
       const file = document.getElementById("report-file").files[0];
       if (!token || !file) return;
       if (file.size > maxFileSize) {
@@ -206,7 +224,12 @@
           throw new Error(error.message || `HTTP ${response.status}`);
         }
         document.getElementById("report-file").value = "";
-        document.getElementById("github-token").value = "";
+        if (rememberTokenInput.checked) {
+          localStorage.setItem(tokenStorageKey, token);
+        } else {
+          localStorage.removeItem(tokenStorageKey);
+          tokenInput.value = "";
+        }
         setUploadStatus("گزارش با موفقیت منتشر شد.");
         await loadReports();
       } catch (error) {
@@ -215,6 +238,13 @@
       } finally {
         uploadButton.disabled = false;
       }
+    });
+
+    document.getElementById("forget-token").addEventListener("click", () => {
+      localStorage.removeItem(tokenStorageKey);
+      tokenInput.value = "";
+      rememberTokenInput.checked = false;
+      setUploadStatus("توکن ذخیره‌شده از این مرورگر حذف شد.");
     });
   </script>
 </body>
