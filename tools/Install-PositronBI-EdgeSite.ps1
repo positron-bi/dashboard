@@ -61,7 +61,6 @@ Start-Service W3SVC
 [pscustomobject]@{
     SiteName = $SiteName
     InternalAddress = "http://$HostName/dashboard/"
-    ServerAddress = "http://$env:COMPUTERNAME/dashboard/"
     Authentication = "Windows Authentication"
-    NextStep = "Create DNS dashboard.parsgrp.com -> this server, then publish HTTPS 443 through the edge firewall."
+    NextStep = "Create DNS $HostName -> this server, then publish HTTPS 443 through the edge firewall."
 }
