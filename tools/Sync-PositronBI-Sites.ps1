@@ -6,16 +6,18 @@ param(
 
 $ErrorActionPreference = "Stop"
 $publisher = Join-Path $PSScriptRoot "Publish-PositronBI-Server.ps1"
+$desktop = Join-Path $env:USERPROFILE "Desktop"
+$inventoryFolder = -join @([char]0x0627, [char]0x0646, [char]0x0628, [char]0x0627, [char]0x0631)
 
 $sites = @(
     @{ Name = "dashboard"; Source = "C:\Dashboards\dashboard" },
-    @{ Name = "aging-dashboard"; Source = (Join-Path $env:USERPROFILE "Desktop\AR_Aging_Report\site") },
-    @{ Name = "inventory-dashboard"; Source = (Join-Path $env:USERPROFILE "Desktop\انبار\site") },
-    @{ Name = "Ledger-dashboard"; Source = (Join-Path $env:USERPROFILE "Desktop\Ledger\site") },
-    @{ Name = "reconciliation_dashboard"; Source = (Join-Path $env:USERPROFILE "Desktop\run_reconciliation\site") },
+    @{ Name = "aging-dashboard"; Source = (Join-Path $desktop "AR_Aging_Report\site") },
+    @{ Name = "inventory-dashboard"; Source = (Join-Path (Join-Path $desktop $inventoryFolder) "site") },
+    @{ Name = "Ledger-dashboard"; Source = (Join-Path $desktop "Ledger\site") },
+    @{ Name = "reconciliation_dashboard"; Source = (Join-Path $desktop "run_reconciliation\site") },
     @{ Name = "atlas-dashboard"; Source = (Join-Path $env:USERPROFILE "Documents\Codex\2026-10-17\new-chat\outputs\atlas-web-dashboard") },
     @{ Name = "meta-dashboard"; Source = (Join-Path $env:USERPROFILE "Documents\Codex\2026-10-17\new-chat\outputs\meta-web-dashboard") },
-    @{ Name = "vesta-dashboard"; Source = (Join-Path $env:USERPROFILE "Desktop\vesta-dashboard-git") },
+    @{ Name = "vesta-dashboard"; Source = (Join-Path $desktop "vesta-dashboard-git") },
     @{ Name = "treasuryflow-dashboard"; Source = "X:\Accounting\report flow"; FilesOnly = @("index.html") }
 )
 
@@ -61,7 +63,9 @@ foreach ($site in $sites) {
     $signature = Get-SiteSignature -Site $site
     $siteName = [string]$site["Name"]
     if (-not $signature) { continue }
-    if ($state.ContainsKey($siteName) -and [string]$state[$siteName] -eq [string]$signature) { continue }
+    $unchanged = $state.ContainsKey($siteName) -and [string]$state[$siteName] -eq [string]$signature
+    Write-Verbose "Checked $siteName; changed=$(-not $unchanged)"
+    if ($unchanged) { continue }
 
     $parameters = @{ Source = $site.Source; SiteName = $siteName; ServerShare = $ServerShare }
     if ($site.FilesOnly) { $parameters.FilesOnly = $site.FilesOnly }
