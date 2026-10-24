@@ -49,8 +49,8 @@ if (Test-Path "IIS:\Sites\$SiteName") {
 }
 
 New-Website -Name $SiteName -PhysicalPath $WebRoot -Port 80 -HostHeader $HostName | Out-Null
-Set-WebConfigurationProperty -PSPath "IIS:\Sites\$SiteName" -Filter "/system.webServer/security/authentication/anonymousAuthentication" -Name enabled -Value $false
-Set-WebConfigurationProperty -PSPath "IIS:\Sites\$SiteName" -Filter "/system.webServer/security/authentication/windowsAuthentication" -Name enabled -Value $true
+Set-WebConfigurationProperty -PSPath "MACHINE/WEBROOT/APPHOST" -Location $SiteName -Filter "/system.webServer/security/authentication/anonymousAuthentication" -Name enabled -Value $false
+Set-WebConfigurationProperty -PSPath "MACHINE/WEBROOT/APPHOST" -Location $SiteName -Filter "/system.webServer/security/authentication/windowsAuthentication" -Name enabled -Value $true
 
 if (-not (Get-NetFirewallRule -DisplayName "Positron BI Dashboard (HTTP)" -ErrorAction SilentlyContinue)) {
     New-NetFirewallRule -DisplayName "Positron BI Dashboard (HTTP)" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 80 -Profile Domain,Private | Out-Null
