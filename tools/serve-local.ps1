@@ -2,7 +2,7 @@
 param(
     [string]$LocalRoot = "C:\Dashboards",
     [int]$Port = 8080,
-    [string]$BindAddress = "127.0.0.1"
+    [string]$BindAddress = "0.0.0.0"
 )
 
 $ErrorActionPreference = "Stop"
@@ -22,15 +22,20 @@ function Send-Response {
 
 $listener = [Net.Sockets.TcpListener]::new([Net.IPAddress]::Parse($BindAddress), $Port)
 $listener.Start()
-Write-Host "Local dashboards: http://${BindAddress}:$Port/dashboard/"
+$displayAddress = if ($BindAddress -eq "0.0.0.0") { "127.0.0.1" } else { $BindAddress }
+Write-Host "Local dashboards: http://${displayAddress}:$Port/dashboard/"
 
 try {
     while ($true) {
         $client = $listener.AcceptTcpClient()
+        $client.ReceiveTimeout = 5000
+        $client.SendTimeout = 5000
         $stream = $null
         $reader = $null
         try {
             $stream = $client.GetStream()
+            $stream.ReadTimeout = 5000
+            $stream.WriteTimeout = 5000
             $reader = [IO.StreamReader]::new($stream, [Text.Encoding]::ASCII, $false, 8192, $true)
             $requestLine = $reader.ReadLine()
             while ($reader.ReadLine()) { }
