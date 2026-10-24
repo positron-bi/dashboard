@@ -1,10 +1,13 @@
 [CmdletBinding()]
 param(
-    [string]$PackageRoot = (Split-Path -Parent $PSScriptRoot),
+    [string]$PackageRoot,
     [string]$WebRoot = "C:\inetpub\wwwroot"
 )
 
 $ErrorActionPreference = "Stop"
+if ([string]::IsNullOrWhiteSpace($PackageRoot)) {
+    $PackageRoot = Split-Path -Parent $PSScriptRoot
+}
 $packagePath = (Resolve-Path -LiteralPath $PackageRoot).Path
 if (-not (Test-Path -LiteralPath (Join-Path $packagePath "dashboard\index.html"))) {
     throw "Dashboard package is incomplete: $packagePath"
