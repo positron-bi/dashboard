@@ -30,7 +30,7 @@ function Get-SiteSignature {
             $_.FullName -notmatch '\\.git\\|\\.github\\|\\tools\\'
         }
     }
-    if (-not $files) { return $null }
+    if (@($files).Count -eq 0) { return $null }
     $parts = $files | Sort-Object FullName | ForEach-Object { "$($_.FullName)|$($_.Length)|$($_.LastWriteTimeUtc.Ticks)" }
     $bytes = [System.Text.Encoding]::UTF8.GetBytes([string]::Join("`n", [string[]]$parts))
     $sha = [System.Security.Cryptography.SHA256]::Create()
