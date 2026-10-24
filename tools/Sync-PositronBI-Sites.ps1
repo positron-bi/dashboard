@@ -18,6 +18,7 @@ $sites = @(
     @{ Name = "atlas-dashboard"; Source = (Join-Path $env:USERPROFILE "Documents\Codex\2026-10-17\new-chat\outputs\atlas-web-dashboard") },
     @{ Name = "meta-dashboard"; Source = (Join-Path $env:USERPROFILE "Documents\Codex\2026-10-17\new-chat\outputs\meta-web-dashboard") },
     @{ Name = "vesta-dashboard"; Source = (Join-Path $desktop "vesta-dashboard-git") },
+    @{ Name = "treasury-dashboard"; Source = "X:\Accounting\report"; FilesOnly = @("index.html") },
     @{ Name = "treasuryflow-dashboard"; Source = "X:\Accounting\report flow"; FilesOnly = @("index.html") }
 )
 
