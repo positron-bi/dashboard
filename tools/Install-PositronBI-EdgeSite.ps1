@@ -21,7 +21,6 @@ if (-not (Test-Path -LiteralPath $portalPath)) {
 }
 
 Enable-WindowsOptionalFeature -Online -FeatureName IIS-WebServerRole -All -NoRestart | Out-Null
-Enable-WindowsOptionalFeature -Online -FeatureName IIS-WindowsAuthentication -All -NoRestart | Out-Null
 Import-Module WebAdministration
 
 New-Item -ItemType Directory -Path $WebRoot -Force | Out-Null
@@ -51,8 +50,8 @@ if (Test-Path "IIS:\Sites\$SiteName") {
 }
 
 New-Website -Name $SiteName -PhysicalPath $WebRoot -Port $Port -HostHeader $HostName | Out-Null
-Set-WebConfigurationProperty -PSPath "MACHINE/WEBROOT/APPHOST" -Location $SiteName -Filter "/system.webServer/security/authentication/anonymousAuthentication" -Name enabled -Value $false
-Set-WebConfigurationProperty -PSPath "MACHINE/WEBROOT/APPHOST" -Location $SiteName -Filter "/system.webServer/security/authentication/windowsAuthentication" -Name enabled -Value $true
+Set-WebConfigurationProperty -PSPath "MACHINE/WEBROOT/APPHOST" -Location $SiteName -Filter "/system.webServer/security/authentication/anonymousAuthentication" -Name enabled -Value $true
+Set-WebConfigurationProperty -PSPath "MACHINE/WEBROOT/APPHOST" -Location $SiteName -Filter "/system.webServer/security/authentication/windowsAuthentication" -Name enabled -Value $false
 
 $firewallRuleName = "Positron BI Dashboard (TCP $Port)"
 if (-not (Get-NetFirewallRule -DisplayName $firewallRuleName -ErrorAction SilentlyContinue)) {
@@ -66,6 +65,6 @@ $siteBaseUrl = if ($Port -eq 80) { "http://$HostName" } else { "http://${HostNam
 [pscustomobject]@{
     SiteName = $SiteName
     InternalAddress = "$siteBaseUrl/dashboard/"
-    Authentication = "Windows Authentication"
+    Authentication = "Anonymous"
     NextStep = "Publish TCP $Port through the edge firewall for external access, or use a HTTPS reverse proxy on 443."
 }
