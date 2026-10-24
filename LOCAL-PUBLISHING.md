@@ -11,7 +11,7 @@
 برای دیدن نسخهٔ لوکال روی همان سیستم:
 
 ```powershell
-& ".\tools\serve-local.ps1"
+& ".\tools\start-local-server.ps1"
 ```
 
 سپس آدرس زیر را باز کنید:
