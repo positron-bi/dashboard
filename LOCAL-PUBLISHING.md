@@ -20,6 +20,14 @@
 http://localhost:8080/dashboard/
 ```
 
+برای نمایش در شبکهٔ داخلی، سرور را با IP همین سیستم اجرا کنید؛ نمونه:
+
+```powershell
+& ".\tools\start-local-server.ps1" -BindAddress "192.168.10.46"
+```
+
+کلاینت‌های شبکه از آدرس `http://192.168.10.46:8080/dashboard/` استفاده می‌کنند. برای این حالت باید اجازهٔ Firewall برای پورت 8080 نیز فعال باشد.
+
 برای اتصال به Generator هر داشبورد، همان دستور `publish-dashboard.ps1` را در انتهای فایل `.bat` یا PowerShell آن Generator قرار دهید. برای هر مخزن، نام سایت را تغییر دهید؛ نمونه:
 
 ```powershell
