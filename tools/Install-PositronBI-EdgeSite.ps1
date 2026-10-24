@@ -3,7 +3,9 @@ param(
     [string]$PackageRoot,
     [string]$WebRoot = "C:\inetpub\PositronBI-Dashboard",
     [string]$SiteName = "Positron BI Dashboard",
-    [string]$HostName = "dashboard.parsgrp.com"
+    [string]$HostName = "dashboard.parsgrp.com",
+    [ValidateRange(1, 65535)]
+    [int]$Port = 80
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,19 +50,22 @@ if (Test-Path "IIS:\Sites\$SiteName") {
     Remove-Website -Name $SiteName
 }
 
-New-Website -Name $SiteName -PhysicalPath $WebRoot -Port 80 -HostHeader $HostName | Out-Null
+New-Website -Name $SiteName -PhysicalPath $WebRoot -Port $Port -HostHeader $HostName | Out-Null
 Set-WebConfigurationProperty -PSPath "MACHINE/WEBROOT/APPHOST" -Location $SiteName -Filter "/system.webServer/security/authentication/anonymousAuthentication" -Name enabled -Value $false
 Set-WebConfigurationProperty -PSPath "MACHINE/WEBROOT/APPHOST" -Location $SiteName -Filter "/system.webServer/security/authentication/windowsAuthentication" -Name enabled -Value $true
 
-if (-not (Get-NetFirewallRule -DisplayName "Positron BI Dashboard (HTTP)" -ErrorAction SilentlyContinue)) {
-    New-NetFirewallRule -DisplayName "Positron BI Dashboard (HTTP)" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 80 -Profile Domain,Private | Out-Null
+$firewallRuleName = "Positron BI Dashboard (TCP $Port)"
+if (-not (Get-NetFirewallRule -DisplayName $firewallRuleName -ErrorAction SilentlyContinue)) {
+    New-NetFirewallRule -DisplayName $firewallRuleName -Direction Inbound -Action Allow -Protocol TCP -LocalPort $Port -Profile Domain,Private | Out-Null
 }
 
 Start-Service W3SVC
 
+$siteBaseUrl = if ($Port -eq 80) { "http://$HostName" } else { "http://${HostName}:$Port" }
+
 [pscustomobject]@{
     SiteName = $SiteName
-    InternalAddress = "http://$HostName/dashboard/"
+    InternalAddress = "$siteBaseUrl/dashboard/"
     Authentication = "Windows Authentication"
-    NextStep = "Create DNS $HostName -> this server, then publish HTTPS 443 through the edge firewall."
+    NextStep = "Publish TCP $Port through the edge firewall for external access, or use a HTTPS reverse proxy on 443."
 }
