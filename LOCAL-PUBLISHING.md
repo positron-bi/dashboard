@@ -27,3 +27,9 @@ http://localhost:8080/dashboard/
 ```
 
 در سرور شبکه، این مسیر را به یک Site در IIS متصل کنید و به‌جای `serve-local.ps1` از IIS استفاده کنید.
+
+برای دریافت تغییرهایی که Generatorهای دیگر روی GitHub منتشر می‌کنند، اجرا کنید:
+
+```powershell
+& ".\tools\sync-local-sites.ps1"
+```

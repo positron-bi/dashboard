@@ -888,5 +888,13 @@
 
     refreshMarketPrices();
     window.setInterval(refreshMarketPrices, 60_000);
+
+    if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
+      document.querySelectorAll('a[href^="https://positron-bi.github.io/"]').forEach((link) => {
+        const remoteUrl = new URL(link.href);
+        link.href = `${window.location.origin}${remoteUrl.pathname}`;
+        link.target = "_self";
+      });
+    }
   </script>
 </body></html>
