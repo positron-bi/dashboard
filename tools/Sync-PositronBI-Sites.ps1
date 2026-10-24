@@ -59,14 +59,15 @@ if (Test-Path -LiteralPath $StatePath) {
 $published = @()
 foreach ($site in $sites) {
     $signature = Get-SiteSignature -Site $site
+    $siteName = [string]$site["Name"]
     if (-not $signature) { continue }
-    if ($state[$site.Name] -eq $signature) { continue }
+    if ($state.ContainsKey($siteName) -and [string]$state[$siteName] -eq [string]$signature) { continue }
 
-    $parameters = @{ Source = $site.Source; SiteName = $site.Name; ServerShare = $ServerShare }
+    $parameters = @{ Source = $site.Source; SiteName = $siteName; ServerShare = $ServerShare }
     if ($site.FilesOnly) { $parameters.FilesOnly = $site.FilesOnly }
     & $publisher @parameters | Out-Null
-    $state[$site.Name] = $signature
-    $published += $site.Name
+    $state[$siteName] = $signature
+    $published += $siteName
 }
 
 $state | ConvertTo-Json | Set-Content -LiteralPath $StatePath -Encoding UTF8
