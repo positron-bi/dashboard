@@ -14,8 +14,14 @@ public sealed class DashboardGrant
 
 public sealed class DashboardAccessState
 {
-    public List<string> Administrators { get; set; } = new List<string>();
-    public List<DashboardGrant> Grants { get; set; } = new List<DashboardGrant>();
+    public List<string> Administrators { get; set; }
+    public List<DashboardGrant> Grants { get; set; }
+
+    public DashboardAccessState()
+    {
+        Administrators = new List<string>();
+        Grants = new List<DashboardGrant>();
+    }
 }
 
 public static class DashboardCatalog
