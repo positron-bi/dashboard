@@ -15,7 +15,7 @@
     {
         var identity = User == null || User.Identity == null ? "" : User.Identity.Name;
         if (!DashboardAccess.IsAdministrator(identity)) { Response.StatusCode = 403; Context.ApplicationInstance.CompleteRequest(); return; }
-        if (!IsPostBack) return;
+        if (!String.Equals(Request.HttpMethod, "POST", StringComparison.OrdinalIgnoreCase)) return;
         if (!String.Equals(Request.Form["csrf"], Token, StringComparison.Ordinal)) { ErrorMessage = "درخواست نامعتبر است؛ صفحه را تازه کنید."; return; }
         try {
             if (Request.Form["action"] == "delete") {
