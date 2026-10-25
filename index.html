@@ -571,7 +571,6 @@
         </div>
       </div>
       <div class="header-actions">
-        <a class="add-report" id="access-management" href="/access/index.aspx" hidden>مدیریت دسترسی‌ها</a>
         <a class="add-report" href="ad-hoc-reports/upload.html">+ افزودن گزارش</a>
         <div class="status">۸ داشبورد فعال</div>
       </div>
@@ -907,7 +906,6 @@
           document.querySelectorAll("[data-dashboard-id]").forEach((card) => {
             card.hidden = !allowed.has(card.dataset.dashboardId);
           });
-          if (access.isAdmin) document.getElementById("access-management").hidden = false;
         })
         .catch(() => {
           document.querySelectorAll("[data-dashboard-id]").forEach((card) => { card.hidden = true; });
