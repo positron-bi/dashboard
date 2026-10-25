@@ -1,4 +1,4 @@
-<%@ Page Language="C#" %>
+<%@ Page Language="C#" ContentType="text/html" ResponseEncoding="utf-8" Culture="fa-IR" UICulture="fa-IR" %>
 <%@ Import Namespace="System.DirectoryServices" %>
 <%@ Import Namespace="System.Linq" %>
 <script runat="server">
