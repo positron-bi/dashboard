@@ -571,6 +571,7 @@
         </div>
       </div>
       <div class="header-actions">
+        <a class="add-report" id="access-management" href="access/" hidden>مدیریت دسترسی‌ها</a>
         <a class="add-report" href="ad-hoc-reports/upload.html">+ افزودن گزارش</a>
         <div class="status">۸ داشبورد فعال</div>
       </div>
@@ -616,7 +617,7 @@
     </section>
 
     <section class="grid" aria-label="لینک داشبوردها">
-      <a class="card treasury" href="https://positron-bi.github.io/treasury-dashboard/" target="_blank" rel="noopener">
+      <a class="card treasury" data-dashboard-id="treasury" href="https://positron-bi.github.io/treasury-dashboard/" target="_blank" rel="noopener">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M3 10h18"></path>
@@ -641,7 +642,7 @@
         </span>
       </a>
 
-      <a class="card forecast" href="https://positron-bi.github.io/treasuryflow-dashboard/" target="_blank" rel="noopener">
+      <a class="card forecast" data-dashboard-id="forecast" href="https://positron-bi.github.io/treasuryflow-dashboard/" target="_blank" rel="noopener">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M4 19V5"></path>
@@ -662,7 +663,7 @@
         </span>
       </a>
 
-      <a class="card inventory" href="https://positron-bi.github.io/inventory-dashboard/" target="_blank" rel="noopener">
+      <a class="card inventory" data-dashboard-id="inventory" href="https://positron-bi.github.io/inventory-dashboard/" target="_blank" rel="noopener">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="m21 8-9-5-9 5 9 5 9-5Z"></path>
@@ -683,7 +684,7 @@
         </span>
       </a>
 
-      <a class="card financial-group" href="financial-group/">
+      <a class="card financial-group" data-dashboard-id="financial-group" href="financial-group/">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M3 6h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -702,7 +703,7 @@
         </span>
       </a>
 
-      <a class="card aging" href="https://positron-bi.github.io/aging-dashboard/" target="_blank" rel="noopener">
+      <a class="card aging" data-dashboard-id="aging" href="https://positron-bi.github.io/aging-dashboard/" target="_blank" rel="noopener">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M12 8v5l3 2"></path>
@@ -722,7 +723,7 @@
         </span>
       </a>
 
-      <a class="card ledger" href="https://positron-bi.github.io/Ledger-dashboard/" target="_blank" rel="noopener">
+      <a class="card ledger" data-dashboard-id="ledger" href="https://positron-bi.github.io/Ledger-dashboard/" target="_blank" rel="noopener">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M4 3h16v18H4z"></path>
@@ -744,7 +745,7 @@
         </span>
       </a>
 
-      <a class="card organization" href="https://positron-bi.github.io/organization-dashboard/" target="_blank" rel="noopener">
+      <a class="card organization" data-dashboard-id="organization" href="https://positron-bi.github.io/organization-dashboard/" target="_blank" rel="noopener">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <circle cx="12" cy="5" r="2"></circle>
@@ -768,7 +769,7 @@
         </span>
       </a>
 
-      <a class="card financial" href="https://positron-bi.github.io/Financial-Statements/" target="_blank" rel="noopener">
+      <a class="card financial" data-dashboard-id="financial-statements" href="https://positron-bi.github.io/Financial-Statements/" target="_blank" rel="noopener">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M5 3h11l3 3v15H5z"></path>
@@ -790,7 +791,7 @@
         </span>
       </a>
 
-      <a class="card reconciliation" href="https://positron-bi.github.io/reconciliation_dashboard/" target="_blank" rel="noopener">
+      <a class="card reconciliation" data-dashboard-id="reconciliation" href="https://positron-bi.github.io/reconciliation_dashboard/" target="_blank" rel="noopener">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M9 11 12 14 22 4"></path>
@@ -811,7 +812,7 @@
         </span>
       </a>
 
-      <a class="card ad-hoc-reports" href="ad-hoc-reports/">
+      <a class="card ad-hoc-reports" data-dashboard-id="ad-hoc-reports" href="ad-hoc-reports/">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M3 6h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -895,6 +896,22 @@
         link.href = `${window.location.origin}${remoteUrl.pathname}`;
         link.target = "_self";
       });
+    }
+
+    const securedHosts = new Set(["bi-report.parsgrp.com", "bi-report"]);
+    if (securedHosts.has(window.location.hostname.toLowerCase())) {
+      fetch("/access/api.aspx", { cache: "no-store", credentials: "same-origin" })
+        .then((response) => response.ok ? response.json() : Promise.reject(new Error(`HTTP ${response.status}`)))
+        .then((access) => {
+          const allowed = new Set(access.dashboards || []);
+          document.querySelectorAll("[data-dashboard-id]").forEach((card) => {
+            card.hidden = !allowed.has(card.dataset.dashboardId);
+          });
+          if (access.isAdmin) document.getElementById("access-management").hidden = false;
+        })
+        .catch(() => {
+          document.querySelectorAll("[data-dashboard-id]").forEach((card) => { card.hidden = true; });
+        });
     }
   </script>
 </body></html>

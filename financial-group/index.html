@@ -35,32 +35,20 @@
   </style>
 </head>
 <body>
-  <main id="login-panel">
-    <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
-    <h1>ورود به پوشهٔ گروه مالی</h1>
-    <p>برای مشاهدهٔ محتوای این پوشه، اطلاعات ورود را وارد کنید.</p>
-    <form id="login-form">
-      <label>نام کاربری<input id="username" autocomplete="username" required></label>
-      <label>رمز عبور<input id="password" type="password" autocomplete="current-password" required></label>
-      <p class="error" id="error-message" hidden>اطلاعات ورود درست نیست.</p>
-      <button type="submit">ورود</button>
-    </form>
-  </main>
-
-  <main id="folder-content" hidden>
+  <main id="folder-content">
     <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M3 9h18"></path></svg></span>
     <h1>گروه مالی</h1>
     <p>سامانه‌ها و گزارش‌های مالی گروه را از این بخش انتخاب کنید.</p>
     <div class="folder-links">
-      <a class="folder-link" href="https://positron-bi.github.io/vesta-dashboard/" target="_blank" rel="noopener">
+      <a class="folder-link" data-dashboard-id="vesta" href="https://positron-bi.github.io/vesta-dashboard/" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="m7 15 4-4 3 2 5-6"></path><path d="M16 7h3v3"></path></svg>
         <span><strong>داشبورد وستا</strong><small>مشاهده گزارش‌ها و اطلاعات وستا</small></span>
       </a>
-      <a class="folder-link" href="https://positron-bi.github.io/meta-dashboard/" target="_blank" rel="noopener">
+      <a class="folder-link" data-dashboard-id="meta" href="https://positron-bi.github.io/meta-dashboard/" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="m7 15 4-4 3 2 5-6"></path><path d="M16 7h3v3"></path></svg>
         <span><strong>داشبورد متا</strong><small>مشاهدهٔ گزارش‌ها و تحلیل‌های متا</small></span>
       </a>
-      <a class="folder-link" href="https://positron-bi.github.io/atlas-dashboard/" target="_blank" rel="noopener">
+      <a class="folder-link" data-dashboard-id="atlas" href="https://positron-bi.github.io/atlas-dashboard/" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="m7 15 4-4 3 2 5-6"></path><path d="M16 7h3v3"></path></svg>
         <span><strong>داشبورد اطلس</strong><small>مشاهدهٔ گزارش‌ها و تحلیل‌های اطلس</small></span>
       </a>
@@ -69,39 +57,25 @@
   </main>
 
   <script>
-    const accessKey = "positron-folder-access";
-    const validUsername = atob("YWRtaW4=");
-    const validPassword = atob("Nzc3Nw==");
-    const loginPanel = document.getElementById("login-panel");
-    const folderContent = document.getElementById("folder-content");
-
-    function grantAccess() {
-      sessionStorage.setItem(accessKey, "granted");
-      loginPanel.hidden = true;
-      folderContent.hidden = false;
-    }
-
-    if (sessionStorage.getItem(accessKey) === "granted") {
-      grantAccess();
-    }
-
-    document.getElementById("login-form").addEventListener("submit", (event) => {
-      event.preventDefault();
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      if (username === validUsername && password === validPassword) {
-        grantAccess();
-        return;
-      }
-      document.getElementById("error-message").hidden = false;
-    });
-
     if (window.location.hostname !== "positron-bi.github.io") {
       document.querySelectorAll('a[href^="https://positron-bi.github.io/"]').forEach((link) => {
         const remoteUrl = new URL(link.href);
         link.href = `${window.location.origin}${remoteUrl.pathname}`;
         link.target = "_self";
       });
+    }
+
+    const securedHosts = new Set(["bi-report.parsgrp.com", "bi-report"]);
+    if (securedHosts.has(window.location.hostname.toLowerCase())) {
+      fetch("/access/api.aspx", { cache: "no-store", credentials: "same-origin" })
+        .then((response) => response.ok ? response.json() : Promise.reject())
+        .then((access) => {
+          const allowed = new Set(access.dashboards || []);
+          document.querySelectorAll("[data-dashboard-id]").forEach((card) => {
+            card.hidden = !allowed.has(card.dataset.dashboardId);
+          });
+        })
+        .catch(() => document.querySelectorAll("[data-dashboard-id]").forEach((card) => { card.hidden = true; }));
     }
   </script>
 </body>
