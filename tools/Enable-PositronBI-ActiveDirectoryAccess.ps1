@@ -32,7 +32,7 @@ if (-not (Test-Path "IIS:\Sites\$SiteName")) {
     throw "The IIS site '$SiteName' was not found. No other IIS site was changed."
 }
 
-$binding = Get-WebBinding -Name $SiteName | Where-Object { $_.protocol -eq "http" -and $_.bindingInformation -match ":$Port:" }
+$binding = Get-WebBinding -Name $SiteName | Where-Object { $_.protocol -eq "http" -and $_.bindingInformation -match ":${Port}:" }
 if (-not $binding) {
     throw "The IIS site '$SiteName' does not have an HTTP binding on port $Port. No other IIS site was changed."
 }
