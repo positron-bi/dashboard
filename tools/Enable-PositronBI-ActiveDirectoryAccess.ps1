@@ -60,7 +60,7 @@ Restart-WebAppPool -Name ((Get-Item "IIS:\Sites\$SiteName").ApplicationPool)
     SiteName = $SiteName
     Port = $Port
     Authentication = "Windows Authentication / Active Directory"
-    AccessManagement = "http://bi-report.parsgrp.com:$Port/access/"
+    AccessManagement = "http://bi-report.parsgrp.com:$Port/access/index.aspx"
     Portal = "http://bi-report.parsgrp.com:$Port/dashboard/"
     Scope = "Only the dedicated IIS site on port $Port; port 9191 was not changed."
 }
